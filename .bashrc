@@ -8,6 +8,16 @@ case $- in
       *) return;;
 esac
 
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/snap/bin:/home/rame0/.config/composer/vendor/bin
+
+#CUDA & CUDNN
+export PATH=$PATH:/usr/lib/cuda-10.2/lib64/
+
+export LD_LIBRARY_PATH=/usr/lib/cuda-10.2/lib64/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda-10.2/include/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda-10.2/extras/CUPTI/lib64/
+export CUDA_HOME=/usr/lib/cuda-10.2/
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
