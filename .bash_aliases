@@ -22,10 +22,20 @@ if [ -x /usr/bin/dircolors ]; then
     export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 fi
 
+# replace ls witn exa if exists
+if command -v exa &> /dev/null
+then
+    alias ls='exa --color=auto --group-directories-first'
+    alias la='ls'
+    alias l='ls -F'
+else
+  alias la='ls -A'
+  alias l='ls -CF'
+fi
+
+
 # some more ls aliases
 alias ll='ls -lah'
-alias la='ls -A'
-alias l='ls -CF'
 alias em='emacs -nw'
 alias dd='dd status=progress'
 alias _='sudo'
