@@ -8,7 +8,7 @@ case $- in
       *) return;;
 esac
 
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/snap/bin:/home/rame0/.config/composer/vendor/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/snap/bin:$HOME/.config/composer/vendor/bin
 
 #CUDA & CUDNN
 export PATH=$PATH:/usr/lib/cuda-10.2/lib64/
