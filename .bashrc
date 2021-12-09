@@ -71,11 +71,27 @@ if [ "$color_prompt" = yes ]; then
     info_color='\[\033[1;34m\]'
     prompt_symbol=📛
     if [ "$EUID" -eq 0 ]; then # Change prompt colors for root user
-	prompt_color='\[\033[;94m\]'
-	info_color='\[\033[1;31m\]'
-	prompt_symbol=💀
+    	prompt_color='\[\033[;94m\]'
+    	info_color='\[\033[1;31m\]'
+    	prompt_symbol=💀
     fi
-    PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'\$\[\033[0m\] '
+    PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}'
+    # user
+    PS1+='('$info_color'\u${prompt_symbol}\h'$prompt_color')'
+    # path
+    PS1+='-[\[\033[0;1m\]\w'$prompt_color']'
+
+    # git
+    . ~/.dotfiles/git-prompt.sh
+
+    GIT_PS1_SHOWDIRTYSTATE=1
+    GIT_PS1_SHOWUPSTREAM=1
+    GIT_PS1_SHOWCOLORHINTS=1
+
+    PS1+='$(__git_ps1 "('$info_color'git: \[\033[0;1m\]%s'$prompt_color')")'
+
+    # prompt
+    PS1+='\n'$prompt_color'└─'$info_color'\$\[\033[0m\] '
     # BackTrack red prompt
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
