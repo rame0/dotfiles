@@ -19,10 +19,12 @@
 # Find all dot files then if the original file exists, create a backup
 # Once backed up to {file}.dtbak symlink the new dotfile in place
 for file in $(find . -maxdepth 1 -name ".*" -type f  -printf "%f\n" ); do
-    if [ ! -f "~/$file" ]; then
+    if [ -L ~/$file ]; then
         echo "~/$file already symlink. Skip...."
-    else
+    elif [ -f ~/$file ]; then
         mv -f ~/$file{,.dtbak}
+        ln -s $PWD/$file ~/$file
+    else
         ln -s $PWD/$file ~/$file
     fi
 done
@@ -36,7 +38,7 @@ fi
 # Create simlinks for ~/.config directories
 for dir in $(ls -d .config/*); do
     workdir="$HOME/$dir"
-    if [ -d "$workdir" ]; then
+    if [ -d $workdir ]; then
         if [ -L "$workdir" ]; then
             echo "$workdir alredy simlink. Skip...."
             # skip dir continue to next one
