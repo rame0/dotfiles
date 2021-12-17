@@ -22,6 +22,16 @@ if [ -x /usr/bin/dircolors ]; then
     export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 fi
 
+if command -v batcat &> /dev/null
+then
+    alias cat="batcat"
+fi
+
+if command -v bat &> /dev/null
+then
+    alias cat="bat"
+fi
+
 # replace ls witn exa if exists
 if command -v exa &> /dev/null
 then
