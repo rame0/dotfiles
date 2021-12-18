@@ -1309,7 +1309,8 @@ click-left = ~/.config/polybar/scripts/pwvolume.sh next-sink
 click-middle = ~/.config/polybar/scripts/pwvolume.sh toggle-mute
 scroll-up = ~/.config/polybar/scripts/pwvolume.sh volume-up
 scroll-down = ~/.config/polybar/scripts/pwvolume.sh volume-down
-
+format-foreground = #fefefe
+format-background = #668bd7
 
 ################################################################################
 
@@ -1325,6 +1326,8 @@ click-left = ~/.config/polybar/scripts/pwvolume_ru.sh next-sink
 click-middle = ~/.config/polybar/scripts/pwvolume_ru.sh toggle-mute
 scroll-up = ~/.config/polybar/scripts/pwvolume_ru.sh volume-up
 scroll-down = ~/.config/polybar/scripts/pwvolume_ru.sh volume-down
+format-foreground = #fefefe
+format-background = #668bd7
 
 ################################################################################
 
