@@ -102,7 +102,7 @@ exec_always --no-startup-id fix_xcursor
 
 
 ## autostart apps
-exec telegram-desctop
+exec telegram-desktop
 exec thunderbird
 exec discord
 exec brave-browser --restore
