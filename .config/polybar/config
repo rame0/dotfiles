@@ -126,7 +126,7 @@ font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 
 modules-left = i3 xwindow
 modules-center = 
-modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire arrow3 updates-apt arrow2 date
+modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire_ru arrow3 updates-apt arrow2 date
 
 separator = 
 
@@ -344,7 +344,7 @@ font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 
 modules-left = bspwm xwindow
 modules-center = 
-modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire arrow3 updates-apt arrow2 date
+modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire_ru arrow3 updates-apt arrow2 date
 
 tray-detached = false
 tray-offset-x = 0
@@ -410,7 +410,7 @@ font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 
 modules-left = xmenu ewmh xwindow
 modules-center = 
-modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire arrow3 updates-apt arrow2 date
+modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire_ru arrow3 updates-apt arrow2 date
 
 tray-detached = false
 tray-offset-x = 0
@@ -476,7 +476,7 @@ font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 
 modules-left = xmonad
 modules-center =
-modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire arrow3 updates-apt arrow2 date
+modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pipewire_ru arrow3 updates-apt arrow2 date
 
 tray-detached = false
 tray-offset-x = 0
@@ -1334,6 +1334,21 @@ click-middle = ~/.config/polybar/scripts/pwvolume.sh toggle-mute
 scroll-up = ~/.config/polybar/scripts/pwvolume.sh volume-up
 scroll-down = ~/.config/polybar/scripts/pwvolume.sh volume-down
 
+
+################################################################################
+
+[module/pipewire_ru]
+type = custom/script
+exec = ~/.config/polybar/scripts/pwvolume_ru.sh
+tail = true
+
+label= %output%
+
+click-right = ~/.config/polybar/scripts/pwvolume_ru.sh previous-sink
+click-left = ~/.config/polybar/scripts/pwvolume_ru.sh next-sink
+click-middle = ~/.config/polybar/scripts/pwvolume_ru.sh toggle-mute
+scroll-up = ~/.config/polybar/scripts/pwvolume_ru.sh volume-up
+scroll-down = ~/.config/polybar/scripts/pwvolume_ru.sh volume-down
 
 ################################################################################
 
