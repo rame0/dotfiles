@@ -52,6 +52,13 @@ set $refresh_i3status killall -SIGUSR1 i3status
 # ╰╯╱╰┻━━┻━┻━━┻━━┻━┻╯╰┻╯╰━╯
 #
 
+# Nvidia settings
+exec_always --no-startup-id "/usr/sh -c '/usr/bin/nvidia-settings --load-config-only'"
+
+# BIFIT signer
+exec --no-startup-id $HOME/.local/share/BIFIT/BIFIT Signer Host/start.sh
+
+
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
@@ -69,10 +76,16 @@ exec_always "setxkbmap -model pc105 -layout us,ru -variant , -option "
 
 #exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
+# SSH Key Agent
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh
+
+# Polkit
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-exec_always --no-startup-id blueman-applet
+# bluetoth applet
+exec --no-startup-id blueman-applet
 
+# YandexDisk indicator
 exec --no-startup-id yandex-disk-indicator
 
 # Compton compositor
@@ -85,19 +98,19 @@ exec --no-startup-id nitrogen --restore; sleep 1; picom -b --config ~/.config/pi
 
 exec --no-startup-id numlockx on
 
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
-exec --no-startup-id xfce4-power-manager
-
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
+
+#exec --no-startup-id xfce4-power-manager
 # exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
@@ -107,9 +120,12 @@ exec_always --no-startup-id fix_xcursor
 #exec telegram-desktop
 #exec thunderbird
 #exec discord
+# Brave browser
 exec brave-browser --restore
+# Sutter screenshot tool
 exec shutter --min_at_startup
-
+# Ferdi
+exec /opt/Ferdi/ferdi
 
 # 
 # ╭╮╭╮╭╮╱╱╱╱╭╮
