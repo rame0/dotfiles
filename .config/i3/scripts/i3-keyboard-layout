@@ -1,0 +1,233 @@
+#!/bin/bash
+
+#
+# ╔═══╗╔═══╗╔═╗╔═╗    ╔═══╗
+# ║╔═╗║║╔═╗║║║╚╝║║    ║╔═╗║
+# ║╚═╝║║║ ║║║╔╗╔╗║╔══╗║║ ║║
+# ║╔╗╔╝║╚═╝║║║║║║║║╔╗║║║ ║║
+# ║║║╚╗║╔═╗║║║║║║║║║═╣║╚═╝║
+# ╚╝╚═╝╚╝ ╚╝╚╝╚╝╚╝╚══╝╚═══╝
+#
+# Ramil A.
+# https://github.com/rame0
+# https://rame0.ru
+# 
+# This version uses `xkblayout-state` to get and set keyboard layouts
+#
+
+### 
+### Originals
+###
+### i3-keyboard-layout
+### https://github.com/porras/i3-keyboard-layout
+### 
+### Tazeg/i3status
+### https://github.com/Tazeg/i3status  
+###
+
+set -e
+
+scripts="$HOME/.config/i3/scripts/"
+
+
+
+cycle() {
+
+  $scripts"xkblayout-state" set +1
+  pgrep i3status | xargs --no-run-if-empty kill -s USR1 # tell i3status to update
+}
+
+
+bg_color="#282a36ef"
+fg_color="#f8f8f2"
+
+# Print a left caret separator
+# @params {string} $1 text color, ex: "#FF0000"
+# @params {string} $2 background color, ex: "#FF0000"
+separator() {
+  echo -n "{"
+  echo -n "\"full_text\":\":|:\"," # CTRL+Ue0b2
+  echo -n "\"separator\":false,"
+  echo -n "\"separator_block_width\":0,"
+  echo -n "\"border\":\"$bg_color\","
+  echo -n "\"border_left\":0,"
+  echo -n "\"border_right\":0,"
+  echo -n "\"border_top\":0,"
+  echo -n "\"border_bottom\":0,"
+  echo -n "\"color\":\"#f1fa8c\""
+  echo -n "}"
+}
+
+common() {
+  echo -n "\"border\": \"$bg_color\","
+  echo -n "\"separator\":false,"
+  echo -n "\"separator_block_width\":0,"
+  echo -n "\"border_top\":0,"
+  echo -n "\"border_bottom\":0,"
+  echo -n "\"border_left\":0,"
+  echo -n "\"border_right\":0"
+}
+
+
+
+
+cpu_usage() {
+  #avg load (dummy)
+  #data=($(uptime  | awk -F' *,? *' '{print $10, $12, $14 }'))
+
+  data=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf "%.2f", ($2+$4-u1) * 100 / (t-t1); }' \
+<(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat))
+  separator
+  echo -n ",{"
+  echo -n "\"name\":\"id_cpu_usage\","
+  # avg load output
+  #echo -n "\"full_text\":\" ${data[0]}%/${data[1]}%/${data[2]}%\","
+
+  echo -n "\"full_text\":\"${data}%\","
+  common
+  echo -n "},"
+}
+
+
+
+mem_usage() {
+  data=$(free -m | grep "Память" | awk '{printf "%.1f", $3/1000}')
+  separator
+  echo -n ",{"
+  echo -n "\"name\":\"id_mem_usage\","
+  echo -n "\"full_text\":\"${data}GiB\","
+  common
+  echo -n "},"
+}
+
+
+get_kbdlayout() {
+  layout=$($scripts"xkblayout-state" print '%s')
+  variant=$($scripts"xkblayout-state" print '%v')
+
+
+  separator
+  echo -n ",{"
+  echo -n "\"name\":\"ip_local\","
+  echo -n "\"full_text\":"
+  case $layout in
+    "ru")
+      echo -n "\"🇷🇺\""
+    ;;
+    "us")
+      echo -n "\"🇺🇸\""
+    ;;
+  esac
+  echo -n ","
+  echo -n "\"color\":\"$fg_color\","
+  common
+  echo -n "}"
+  
+}
+
+
+
+myvpn_on() {
+  local color="#ff5555"
+  local icon="❌"
+  if [ -d /proc/sys/net/ipv4/conf/tun0 ]; then
+    color="#50fa7b" # rouge
+    icon="✔"
+  fi
+  separator
+  echo -n ",{"
+  echo -n "\"name\":\"id_vpn\","      
+  echo -n "\"full_text\":\"${icon}VPN\","
+  echo -n "\"color\":\"$color\","
+  common
+  echo -n "},"
+}
+
+myip_local() {
+  separator
+  echo -n ",{"
+  echo -n "\"name\":\"ip_local\","
+  echo -n "\"full_text\":\"$(ip route get 1 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')\","
+  echo -n "\"color\":\"$fg_color\","
+  common
+  echo -n "},"
+}
+
+pw_volume() {
+    # ENG pwctl
+    #DEFAULT_SINK_ID=$(pw-play --list-targets | sed -n 's/^*[[:space:]]*\([[:digit:]]\+\):.*$/\1/p')
+    #VOLUME=$(pactl list sinks | sed -n "/Sink #${DEFAULT_SINK_ID}/,/Volume/ s!^[[:space:]]\+Volume:.* \([[:digit:]]\+\)%.*!\1!p" | head -n1)
+    #DEFAULT_SINK=$(pw-play --list-targets | sed -ne '1d' -e '/*/p' | grep -o '".*"' | tr -d '"')
+    #IS_MUTED=$(pactl list sinks | sed -n "/Sink #${DEFAULT_SINK_ID}/,/Mute/ s/Mute: \(yes\)/\1/p")
+
+    # RUS pwctl
+    DEFAULT_SINK_ID=$(pw-play --list-targets | sed -n 's/^*[[:space:]]*\([[:digit:]]\+\):.*$/\1/p')
+    VOLUME=$(pactl list sinks | sed -n "/[[:space:]][№|#]${DEFAULT_SINK_ID}/,/Громкость/ s!^[[:space:]]\+Громкость:.* \([[:digit:]]\+\)%.*!\1!p" | head -n1)
+    DEFAULT_SINK=$(pw-play --list-targets | sed -ne '1d' -e '/*/p' | grep -o '".*"' | tr -d '"')
+    IS_MUTED=$(pactl list sinks | sed -n "/[[:space:]][№|#]${DEFAULT_SINK_ID}/,/к выключен/ s/к выключен: \(да\)/\1/p")
+
+    icon="🔇"
+    icon_sp=("🔈" "🔉" "🔊")
+
+
+
+    if [ "${IS_MUTED}" = "" ]; then
+        if [ "${VOLUME}" -le '33' ]; then
+            icon=${icon_sp[0]}
+        elif [ "${VOLUME}" -le '66' ]; then
+            icon=${icon_sp[1]}
+        elif [ "${VOLUME}" -gt '66' ]; then
+            icon=${icon_sp[2]}
+        fi
+    fi
+
+
+    separator
+    echo -n ",{"
+    echo -n "\"name\":\"id_volume\","
+    echo -n "\"full_text\":\"${icon} ${VOLUME}%\","
+    echo -n "\"color\":\"$fg_color\","
+    common
+    echo -n "},"
+
+}
+
+
+mydate() {
+  #separator
+  #echo -n ",{"
+  echo -n "{"
+  echo -n "\"name\":\"id_time\","
+  echo -n "\"full_text\":\" 🕑 $(date "+%a %d/%m/%Y %H:%M:%S") \","
+  echo -n "\"color\":\"#bd93f9\","
+  common
+  echo -n "},"
+}
+
+
+i3status() {
+  while :
+  do
+    read line
+    block=$(mydate)$(cpu_usage)$(mem_usage)$(myip_local)$(pw_volume)$(myvpn_on)$(get_kbdlayout)
+
+    echo ",[$block]" > /home/rame0/test.txt
+    #echo "${line}" > /home/rame0/test.txt
+    echo "${line/\}\]/\},$block\]}"|| exit 1
+  done
+}
+
+subcommand="$1"
+shift || (echo "Please specify one of: get, set <layout>, cycle <layout1> <layout2> ... <layoutN>, i3status" && exit)
+
+case $subcommand in
+  "get")
+    echo -n $(get_kbdlayout)
+    ;;
+  "cycle")
+    cycle "$@"
+    ;;
+  "i3status")
+    i3status
+    ;;
+esac
