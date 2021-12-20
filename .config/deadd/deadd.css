@@ -1,0 +1,134 @@
+/*                              */
+/*  ╔═══╗╔═══╗╔═╗╔═╗    ╔═══╗   */
+/*  ║╔═╗║║╔═╗║║║╚╝║║    ║╔═╗║   */
+/*  ║╚═╝║║║ ║║║╔╗╔╗║╔══╗║║ ║║   */
+/*  ║╔╗╔╝║╚═╝║║║║║║║║╔╗║║║ ║║   */
+/*  ║║║╚╗║╔═╗║║║║║║║║║═╣║╚═╝║   */
+/*  ╚╝╚═╝╚╝ ╚╝╚╝╚╝╚╝╚══╝╚═══╝   */
+/*                              */
+/*  Ramil A.                    */
+/*  https://github.com/rame0    */
+/*  https://rame0.ru            */
+/*                              */
+/*                              */
+
+
+/* Dracula color scheme */
+/* https://github.com/dracula/dracula-theme */
+
+/* Notification center */
+
+
+.blurredBG {
+    background: rgba(40,42,54, 0.78);
+    border-radius: 50px;
+    /*border: 2px solid  rgba(68,71,90, 0.5);*/
+    border: none;
+}
+.blurredBG.notification {
+    background: rgba(40,42,54, 0.78);
+    border-radius: 15px;
+    /*border: 2px solid  rgba(68,71,90, 0.5);*/
+    border: none;
+}
+.deadd-noti-center {
+    font-family: sans-serif;
+}
+
+/*Notifications:*/
+
+/*Appname*/
+label.deadd-noti-center.notification.appname {
+    font-size: 20px;
+    color: #f1fa8c;
+}
+/*Textbody*/
+label.deadd-noti-center.notification.body {
+    font-size: 16px;
+    color: #f8f8f2;
+}
+/*Notification title*/
+label.deadd-noti-center.notification.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f1fa8c;
+}
+/*Image of a notification*/
+image.deadd-noti-center.notification.image {}
+/*Appicon*/
+image.deadd-noti-center.notification.icon {}
+
+/*Notifications in the notification center:*/
+
+
+/* Notification block */
+box.notificationInCenter {
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding: 8px;
+    background: rgba(98,114,164,0.9);
+    border-radius: 5px;
+    color: #f8f8f2;
+    font-size: 14px;
+}
+/*Appname*/
+label.deadd-noti-center.in-center.appname {
+    color: #f1fa8c;
+}
+/*Textbody*/
+label.deadd-noti-center.in-center.body {}
+/*Notification title*/
+label.deadd-noti-center.in-center.title {
+    margin-top: 5px;
+    font-size: 18px;
+    color: #8be9fd;
+}
+/*Notification time*/
+label.deadd-noti-center.in-center.time {
+    color: rgb(139,233,253);
+}
+/*Image of a notification*/
+image.deadd-noti-center.in-center.image {
+    background: transparent;
+}
+/*Appicon*/
+image.deadd-noti-center.in-center.icon {
+
+    background: transparent;
+}
+/*Close button on notification*/
+button.deadd-noti-center.in-center.button-close {
+    font-size: 19px;
+    font-weight: bold;
+    border-radius: 100px;
+    border: 2px solid #bd93f9;
+    color:  #bd93f9;
+    /*margin: 0;*/
+    padding: 0 5px;
+}
+
+
+/*Notification-center:*/
+/*The big time at the top*/
+label.deadd-noti-center.noti-center.time {
+    font-size: 60px;
+    margin-left: 100px;
+    color: rgb(189,147,249);
+    text-shadow:  2px 2px #44475a;
+ }
+/*The date text*/
+label.deadd-noti-center.date {
+    font-size: 22px;
+    margin-left: 30px;
+    color: rgb(189,147,249);
+    text-shadow:  1px 1px #44475a;
+}
+/*“Delete all” Button*/
+button.deadd-noti-center.delete-all {
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 100px;
+    border: 2px solid rgb(98,114,164);
+    color:  rgb(98,114,164);
+    margin-bottom: 15px;
+}
