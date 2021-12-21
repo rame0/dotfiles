@@ -67,7 +67,7 @@ box.notificationInCenter {
     margin-bottom: 0;
     padding: 8px;
     background: rgba(98,114,164,0.9);
-    border-radius: 5px;
+    border-radius: 15px;
     color: #f8f8f2;
     font-size: 14px;
 }
