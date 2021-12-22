@@ -1,4 +1,16 @@
-# Installation
+# My dotfiles
+
+<!--ts-->
+* [Screenshots](#screenshots)
+* [Install](#install)
+* [Uninstall](#uninstall)
+<!--te-->
+
+## Screenshots
+
+![Desctop Screenshot](images/i3wm-piom-deadd-nitrogen.png)
+
+## Install
 ### Download and change folder
 ```
 cd ~
@@ -11,7 +23,9 @@ cd dotfiles
 ./install.sh
 ```
 
-# Uninstallation
+# Uninstall
+
+__DO NOT USE YET__
 
 ### Change to dotfiles folder
 ```
