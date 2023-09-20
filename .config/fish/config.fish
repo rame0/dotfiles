@@ -15,17 +15,27 @@
 
 set TERM "xterm-256color"
 
-# disable fish greeting
-#set -g fish_greeting
-function fish_greeting
-  neofetch
-end
+#disable fish greeting
+set -g fish_greeting
+#function fish_greeting
+#  neofetch
+#end
 
-
+### TMUX
+#if status is-interactive
+#and not set -q TMUX
+#    exec tmux
+#END
 
 # global
 set -gx PATH $PATH /usr/sbin /sbin /snap/bin $HOME/.config/composer/vendor/bin
+set -gx PATH $PATH /usr/lib/docker/cli-plugins
 
+# dotnet
+set -gx PATH $PATH $HOME/.dotnet/tools
+
+# go lang
+set -gx PATH $PATH /usr/local/go/bin
 
 # CUDA & CUDNN
 set -gx PATH $PATH /usr/lib/cuda-10.2/lib64/
@@ -51,6 +61,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 alias ip='ip --color=auto'
+alias tlmgr=tllocalmgr
 
 # Enable EXA (ls replacement)
 if type -q exa
@@ -73,7 +84,7 @@ end
 alias ll='ls -lah'
 alias em='emacs -nw'
 alias dd='dd status=progress'
-alias _='sudo'
+#alias _='sudo'
 
 
 alias gti='git'
@@ -86,6 +97,10 @@ alias dc='cd'
 alias glog='git log --oneline --graph --color --all --decorate'
 alias gitl='git log --pretty=oneline'
 alias gstat='git status'
+
+# commitlint
+#alias clint='commitlint --config $HOME/.config/commitlint.config.js'
+alias clint='commitlint --extends "@commitlint/config-conventional"'
 
 
 # fun aliases
@@ -113,13 +128,13 @@ function fish_prompt --description 'Write out the prompt'
   # User
   set_color $fish_color_user
   printf (whoami)
-  set_color normal
 
   # Icon
+  set_color $fish_color_cwd
   if functions -q fish_is_root_user; and fish_is_root_user
 	printf "💀"
   else
-  	printf "📛"
+  	printf " → "
   end
 
   # Host
@@ -283,3 +298,20 @@ function spark --description Sparklines
         ' && echo
     end
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/ra/.local/share/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+# pnpm end
+
+# if TMUX disable
+if status is-interactive
+and not set -q TMUX
+    bind --erase \c\s\e\[A
+    bind --erase \c\s\e\[C
+    bind --erase \c\s\e\[B
+    bind --erase \c\s\e\[D
+end
+
+
+nvm use --lts

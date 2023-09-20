@@ -266,8 +266,8 @@ i3status() {
 #    read line
 #    block=$(shortcuts)$(mydate)$(cpu_usage)$(mem_usage)$(myip_local)$(pw_volume)$(myvpn_on)$(get_kbdlayout)
 #
-#    echo ",[$block]" > /home/rame0/test.txt
-#    #echo "${line}" > /home/rame0/test.txt
+#    echo ",[$block]" > /home/ra/test.txt
+#    #echo "${line}" > /home/ra/test.txt
 #    echo "${line/\}\]/\},$block\]}"|| exit 1
 #  done
 

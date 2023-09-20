@@ -46,12 +46,15 @@ for dir in $(ls -d .config/*); do
         else
             echo "Backup $workdir to $workdir.bak"
             mv -f "$workdir" "$workdir.bak"
-        fi        
+        fi
     fi
 
     ln -s "$PWD/$dir" "$workdir"
 done
 
+# Install Bat & Exa
+echo "Installing bat (fot `batcat`) and exa (beautifule `ls`)"
+sudo apt install bat exa
 
 # Check if vim-addon installed, if not, install it automatically
 

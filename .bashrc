@@ -24,15 +24,19 @@ case $- in
       *) return;;
 esac
 
+export XDG_CONFIG_HOME=$HOME/.config/
 export PATH=$PATH:/usr/sbin:/sbin:/snap/bin:$HOME/.config/composer/vendor/bin
 
-#CUDA & CUDNN
-export PATH=$PATH:/usr/lib/cuda-10.2/lib64/
+# Jetbrains Toolbox
+export PATH=$PATH:/home/ra/.local/share/JetBrains/Toolbox/scripts
 
-export LD_LIBRARY_PATH=/usr/lib/cuda-10.2/lib64/
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda-10.2/include/
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda-10.2/extras/CUPTI/lib64/
-export CUDA_HOME=/usr/lib/cuda-10.2/
+#CUDA & CUDNN
+export PATH=$PATH:/usr/lib/cuda/lib64/
+export PATH=$PATH:/usr/lib/cuda/bin
+export LD_LIBRARY_PATH=/usr/lib/cuda/lib64/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda/include/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/cuda/extras/CUPTI/lib64/
+export CUDA_HOME=/usr/lib/cuda/
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -81,7 +85,6 @@ if [ -n "$force_color_prompt" ]; then
 	color_prompt=
     fi
 fi
-
 if [ "$color_prompt" = yes ]; then
     prompt_color='\[\033[;32m\]'
     info_color='\[\033[1;34m\]'
@@ -146,3 +149,19 @@ if ! shopt -oq posix; then
 fi
 
 neofetch
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# dotnet
+export DOTNET_HOME="$HOME/.dotnet/tools"
+export PATH="$DOTNET_HOME:$PATH"
+# dothenend
+
+export KUBECONFIG=$HOME/.kube/config

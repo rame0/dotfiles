@@ -12,6 +12,11 @@
 # https://rame0.ru
 #
 #
+
+# sudo support for aliases
+alias sudo='sudo '
+
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -72,3 +77,6 @@ alias dc='cd'
 alias nethack-online='ssh nethack@nethack.alt.org ; clear'
 alias tron-online='ssh sshtron.zachlatta.com ; clear'
 alias glog='git log --oneline --graph --color --all --decorate'
+
+# replace apt with nala
+alias apt='nala'
