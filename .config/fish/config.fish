@@ -13,6 +13,10 @@
 #
 #
 
+
+# Kubectl
+set -gx KUBECONFIG $HOME/.kube/config
+
 set TERM "xterm-256color"
 
 #disable fish greeting
@@ -38,12 +42,24 @@ set -gx PATH $PATH $HOME/.dotnet/tools
 set -gx PATH $PATH /usr/local/go/bin
 
 # CUDA & CUDNN
-set -gx PATH $PATH /usr/lib/cuda-10.2/lib64/
+set -gx PATH $PATH /usr/local/cuda/bin/
+#set -gx PATH $PATH /usr/local/cuda/lib64/
 
-set -Ux LD_LIBRARY_PATH /usr/lib/cuda-10.2/lib64/
-set -Ux LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/lib/cuda-10.2/include/
-set -Ux LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/lib/cuda-10.2/extras/CUPTI/lib64/
-set -Ux CUDA_HOME /usr/lib/cuda-10.2/
+set -Ux LD_LIBRARY_PATH /usr/local/cuda/lib64/
+set -Ux LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/local/cuda/include/
+set -Ux LD_LIBRARY_PATH $LD_LIBRARY_PATH /usr/local/cuda/extras/CUPTI/lib64/
+set -Ux CUDA_HOME /usr/local/cuda
+
+# TEX
+set -Ux TEXMFDIST /usr/share/texmf-dist
+set -Ux TEXMFLOCAL /usr/local/share/texmf:/usr/share/texmf
+set -Ux TEXMFSYSVAR /var/lib/texmf
+set -Ux TEXMFSYSCONFIG /etc/texmf
+set -Ux TEXMFHOME $HOME/texmf
+set -Ux TEXMFVAR $HOME/.texlive/texmf-var
+set -Ux TEXMFCONFIG $HOME/.texlive/texmf-config
+set -Ux TEXMFCACHE $TEXMFSYSVAR
+#;$TEXMFVAR
 
 # #
 # ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
@@ -61,7 +77,6 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 alias ip='ip --color=auto'
-alias tlmgr=tllocalmgr
 
 # Enable EXA (ls replacement)
 if type -q exa
@@ -107,144 +122,6 @@ alias clint='commitlint --extends "@commitlint/config-conventional"'
 alias nethack-online='ssh nethack@nethack.alt.org ; clear'
 alias tron-online='ssh sshtron.zachlatta.com ; clear'
 
-
-# #
-# ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-# █▀▄▄▀█ ▄▄▀█▀▄▄▀█ ▄▀▄ █▀▄▄▀█▄ ▄
-# █ ▀▀ █ ▀▀▄█ ██ █ █▄█ █ ▀▀ ██ █
-# █ ████▄█▄▄██▄▄██▄███▄█ █████▄█
-# ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-# #
-#
-
-
-set -U fish_color_user magenta
-set -U fish_color_host yellow
-
-function fish_prompt --description 'Write out the prompt'
-  set -l last_status $status
-
-  printf "┌──("
-  # User
-  set_color $fish_color_user
-  printf (whoami)
-
-  # Icon
-  set_color $fish_color_cwd
-  if functions -q fish_is_root_user; and fish_is_root_user
-	printf "💀"
-  else
-  	printf " → "
-  end
-
-  # Host
-  set_color $fish_color_host
-  printf (hostname -s)
-  set_color normal
-
-  printf ')-['
-
-  # PWD
-  set_color $fish_color_cwd
-  printf (prompt_pwd)
-  set_color normal
-
-  printf "]"
-
-  fish_prompt_git
-  # I prefer to have a new-line here but messes with the prompt when resizing
-  echo
-
-  if not test $last_status -eq 0
-    set_color $fish_color_error
-  end
-
-  printf '└─$ '
-  set_color normal
-end
-
-set -U fish_color_git_clean green
-set -U fish_color_git_dirty red
-set -U fish_color_git_ahead red
-set -U fish_color_git_staged yellow
-
-set -U fish_color_git_added green
-set -U fish_color_git_modified blue
-set -U fish_color_git_renamed magenta
-set -U fish_color_git_deleted red
-set -U fish_color_git_unmerged yellow
-set -U fish_color_git_untracked cyan
-
-set -U fish_prompt_git_status_added '✚'
-set -U fish_prompt_git_status_modified '*'
-set -U fish_prompt_git_status_renamed '➜'
-set -U fish_prompt_git_status_copied '⇒'
-set -U fish_prompt_git_status_deleted '✖'
-set -U fish_prompt_git_status_untracked '?'
-set -U fish_prompt_git_status_unmerged !
-
-set -U fish_prompt_git_status_order added modified renamed copied deleted untracked unmerged
-
-function fish_prompt_git --description 'Write out the git prompt'
-  set -l branch (git symbolic-ref --quiet --short HEAD 2>/dev/null)
-  if test -z $branch
-    return
-  end
-
-  printf '('
-
-  set -l index (git status --porcelain 2>/dev/null)
-  if test -z "$index"
-    set_color $fish_color_git_clean
-    printf $branch' ✓'
-    set_color normal
-  	printf ")"
-    return
-  end
-
-  git diff-index --quiet --cached HEAD 2>/dev/null
-  set -l staged $status
-  if test $staged = 1
-    set_color $fish_color_git_staged
-  else
-    set_color $fish_color_git_dirty
-  end
-
-  printf $branch' ⚡'
-
-  set -l info
-  for i in $index
-    switch $i
-      case 'A  *'
-        set i added
-      case 'M  *' ' M *'
-        set i modified
-      case 'R  *'
-        set i renamed
-      case 'D  *' ' D *'
-        set i deleted
-      case 'U  *'
-        set i unmerged
-      case '?? *'
-        set i untracked
-    end
-
-    if not contains $i $info
-      set info $info $i
-    end
-  end
-
-  for i in added modified renamed deleted unmerged untracked
-    if contains $i $info
-      eval 'set_color $fish_color_git_'$i
-      eval 'printf $fish_prompt_git_status_'$i
-    end
-  end
-
-  set_color normal
-
-  printf ")"
-end
 
 
 #  ██████╗ ██╗████████╗
@@ -299,10 +176,6 @@ function spark --description Sparklines
     end
 end
 
-# pnpm
-set -gx PNPM_HOME "/home/ra/.local/share/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
-# pnpm end
 
 # if TMUX disable
 if status is-interactive
@@ -314,4 +187,12 @@ and not set -q TMUX
 end
 
 
-nvm use --lts
+#nvm use --lts
+
+
+# pnpm
+set -gx PNPM_HOME "/home/ra/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end

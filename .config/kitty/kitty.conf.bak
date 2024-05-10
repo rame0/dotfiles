@@ -1303,6 +1303,6 @@ map kitty_mod+delete clear_terminal reset active
 
 
 # BEGIN_KITTY_THEME
-# Dracula
+# 1984 Orwellian
 include current-theme.conf
 # END_KITTY_THEME
