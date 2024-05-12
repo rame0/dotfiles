@@ -11,18 +11,18 @@
 # Ramil A.
 # https://github.com/rame0
 # https://rame0.ru
-# 
+#
 # This version uses `xkblayout-state` to get and set keyboard layouts
 #
 
-### 
+###
 ### Originals
 ###
 ### i3-keyboard-layout
 ### https://github.com/porras/i3-keyboard-layout
-### 
+###
 ### Tazeg/i3status
-### https://github.com/Tazeg/i3status  
+### https://github.com/Tazeg/i3status
 ###
 
 set -e
@@ -107,7 +107,7 @@ cpu_usage() {
 
   data=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf "%.2f", ($2+$4-u1) * 100 / (t-t1); }' \
 <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat))
-  
+
 
   local bg="#2E7D32" # vert
   separator $bg  $prev_bg
@@ -127,7 +127,7 @@ cpu_usage() {
 
 mem_usage() {
   data=$(free -m | grep "Память" | awk '{printf "%.1f", $3/1000}')
-  
+
 
   local bg="#3949AB"
   separator $bg  $prev_bg
@@ -144,7 +144,7 @@ mem_usage() {
 get_kbdlayout() {
   layout=$($scripts"xkblayout-state" print '%s')
   variant=$($scripts"xkblayout-state" print '%v')
-  
+
   local bg="#E0E0E0"
   separator $bg  $prev_bg
   echo -n ",{"
@@ -164,7 +164,7 @@ get_kbdlayout() {
   common $bg
   echo -n "}"
   prev_bg=$bg
-  
+
 }
 
 
@@ -181,7 +181,7 @@ myvpn_on() {
   separator $bg  $prev_bg
 
   echo -n ",{"
-  echo -n "\"name\":\"id_vpn\","      
+  echo -n "\"name\":\"id_vpn\","
   echo -n "\"full_text\":\"${icon}VPN\","
   echo -n "\"color\":\"$color\","
   echo -n "\"background\":\"$bg\","
@@ -205,34 +205,29 @@ myip_local() {
 
 pw_volume() {
   # ENG pwctl
-  #DEFAULT_SINK_ID=$(pw-play --list-targets | sed -n 's/^*[[:space:]]*\([[:digit:]]\+\):.*$/\1/p')
-  #VOLUME=$(pactl list sinks | sed -n "/Sink #${DEFAULT_SINK_ID}/,/Volume/ s!^[[:space:]]\+Volume:.* \([[:digit:]]\+\)%.*!\1!p" | head -n1)
-  #DEFAULT_SINK=$(pw-play --list-targets | sed -ne '1d' -e '/*/p' | grep -o '".*"' | tr -d '"')
-  #IS_MUTED=$(pactl list sinks | sed -n "/Sink #${DEFAULT_SINK_ID}/,/Mute/ s/Mute: \(yes\)/\1/p")
+  VOLUME=$(pactl get-sink-volume "@DEFAULT_SINK@" | awk '{print $5}' | grep -oP "\d+")
+  IS_MUTED=$(pactl get-sink-mute "@DEFAULT_SINK@" | sed -n "/Mute/ s/Mute: \(.*\)/\1/p")
 
-  # RUS pwctl
-  DEFAULT_SINK_ID=$(pw-play --list-targets | sed -n 's/^*[[:space:]]*\([[:digit:]]\+\):.*$/\1/p')
-  VOLUME=$(pactl list sinks | sed -n "/[[:space:]][№|#]${DEFAULT_SINK_ID}/,/Громкость/ s!^[[:space:]]\+Громкость:.* \([[:digit:]]\+\)%.*!\1!p" | head -n1)
-  DEFAULT_SINK=$(pw-play --list-targets | sed -ne '1d' -e '/*/p' | grep -o '".*"' | tr -d '"')
-  IS_MUTED=$(pactl list sinks | sed -n "/[[:space:]][№|#]${DEFAULT_SINK_ID}/,/к выключен/ s/к выключен: \(да\)/\1/p")
 
-  icon="🔇"
-  icon_sp=("" "" "")
+  icon=""
+  icon_sp=("🔇" "" "" "")
 
 
 
-  if [ "${IS_MUTED}" = "" ]; then
-      if [ "${VOLUME}" -le '33' ]; then
+  if [ "${IS_MUTED}" = "no" ]; then
+      if [ "${VOLUME}" -le '1' ]; then
           icon=${icon_sp[0]}
-      elif [ "${VOLUME}" -le '66' ]; then
+      elif [ "${VOLUME}" -le '33' ]; then
           icon=${icon_sp[1]}
-      elif [ "${VOLUME}" -gt '66' ]; then
+      elif [ "${VOLUME}" -le '66' ]; then
           icon=${icon_sp[2]}
+      else
+          icon=${icon_sp[3]}
       fi
   fi
 
   local bg="#673AB7"
-  separator $bg  $prev_bg 
+  separator $bg  $prev_bg
   echo -n ",{"
   echo -n "\"name\":\"id_volume\","
   echo -n "\"full_text\":\"${icon} ${VOLUME}%\","
@@ -297,7 +292,7 @@ do
   # TERMINAL
   if [[ $line == *"name"*"id_shortcuts"* ]]; then
     foot -e ~/.config/sway/shortcuts.sh &
-    
+
   # CONNECTION
   elif [[ $line == *"name"*"id_conn"* ]]; then
     foot -e nmtui &
@@ -318,7 +313,7 @@ do
   elif [[ $line == *"name"*"id_logout"* ]]; then
     swaynag -t warning -m $(whoami) -b 'PowerOff' 'foot poweroff' -b 'Restart' 'foot reboot' -b 'Logout' 'swaymsg exit'> /dev/null &
 
-  fi  
+  fi
 done
 
 }
