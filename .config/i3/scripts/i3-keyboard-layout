@@ -126,7 +126,7 @@ cpu_usage() {
 
 
 mem_usage() {
-  data=$(free -m | grep "Память" | awk '{printf "%.1f", $3/1000}')
+  data=$(free -m | sed '2q;d' | awk '{printf "%.1f", $3/1000}')
 
 
   local bg="#3949AB"
