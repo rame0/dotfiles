@@ -1,6 +1,6 @@
 " execute pathogen#infect()
-set mouse=
-set ttymouse=
+"set mouse=
+"set ttymouse=
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
@@ -276,16 +276,16 @@ nnoremap gp `[v`]
 " PATHOGEN PLUGINS "
 """"""""""""""""""""
 
-" START NERDTree if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Close NERDTree if it's the only window left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" https://github.com/nathanaelkane/vim-indent-guides/issues/20
-let g:indent_guides_exclude_filetypes = ['nerdtree']
-" END NERDTree
+"" START NERDTree if no files are specified
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"
+"" Close NERDTree if it's the only window left open
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"
+"" https://github.com/nathanaelkane/vim-indent-guides/issues/20
+"let g:indent_guides_exclude_filetypes = ['nerdtree']
+"" END NERDTree
 
 " START Airline
 let g:airline#extensions#tabline#enabled = 1
