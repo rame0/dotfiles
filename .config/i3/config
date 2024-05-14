@@ -285,6 +285,10 @@ bindsym Alt_R exec ~/.config/i3/scripts/i3-keyboard-layout cycle
 # focus the child container
 #bindsym $mod+d focus child
 
+bindsym $mod+Control+k workspace next
+bindsym $mod+Control+j workspace prev
+bindsym $mod+Tab workspace back_and_forth
+
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
