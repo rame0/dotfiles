@@ -155,7 +155,8 @@ else
         scrot -z -d0 "$file1"
 fi
 
-convert "$file1" -blur 0x8 "$file2"
+#convert "$file1" -blur 0x8 "$file2"
+convert "$file1" -scale 25% -scale 400% "$file2"
 rm "$file1" # Remove for security
 
 if [ $use_logo -eq 1 ]; then

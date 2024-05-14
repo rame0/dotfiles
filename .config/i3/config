@@ -22,8 +22,8 @@ set $myTerm kitty
 
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
-default_border pixel 3
-new_window pixel 3
+default_border pixel 1
+new_window pixel 1
 
 default_floating_border pixel 5
 new_float pixel 5
@@ -41,7 +41,7 @@ font pango:Font Awesome 5 Free, JetBrains Mono, 10
 
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
+#set $refresh_i3status killall -SIGUSR1 i3status
 
 
 
@@ -68,7 +68,7 @@ exec --no-startup-id $HOME/.local/share/BIFIT/BIFIT Signer Host/start.sh
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
 
-exec --no-startup-id volumeicon
+#exec --no-startup-id volumeicon
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 
@@ -88,6 +88,9 @@ exec_always "setxkbmap -model pc105 -layout us,ru -variant , -option "
 # Polkit
 #exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
+#kWaller
+exec --no-startup-id /usr/lib/pam_kwallet_init
+
 # bluetoth applet
 exec --no-startup-id blueman-applet
 
@@ -98,9 +101,10 @@ exec --no-startup-id yandex-disk-indicator
 #exec --no-startup-id /usr/bin/compton  --config $HOME/.config/i3/compton.conf
 
 # nitrogen + picom compositor
-exec --no-startup-id nitrogen --restore; sleep 1; picom -b --config $HOME/.config/picom/picom.conf
+#exec --no-startup-id nitrogen --restore; sleep 1; picom -b --config $HOME/.config/picom/picom.conf
 # nitrogen
 #exec --no-startup-id nitrogen --restore
+exec --no-startup-id feh --bg-fill --randomize ~/.local/share/wallpapers/*; sleep 1; picom -b --config ~/.config/picom/picom.conf
 
 exec --no-startup-id numlockx on
 
@@ -117,14 +121,15 @@ exec --no-startup-id nm-applet
 
 
 #exec --no-startup-id xfce4-power-manager
-# exec --no-startup-id xautolock -time 10 -locker blurlock
+set $LockerScript "~/.config/i3/scripts/xkblayout-state set 0; ~/.config/i3/scripts/i3lock-wrapper -nbl; xset r rate 200 40;"
+exec --no-startup-id xautolock -time 10 -locker $LockerScript
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 
 
 ## autostart apps
-#exec telegram-desktop
-#exec thunderbird
+exec telegram-desktop
+exec thunderbird
 #exec discord
 # Brave browser
 exec brave --restore
@@ -158,8 +163,8 @@ set $ws9 9:thb
 
 
 # Open applications on specific workspaces
-assign [class="Thunderbird"] $ws9
-assign [class="Telegram"] $ws8
+assign [class="thunderbird"] $ws9
+assign [class="Telegram"] $ws9
 assign [class="discord"] $ws8
 #assign [class="Brave"] $ws1
 # assign [class="Pcmanfm"] $ws3
@@ -362,13 +367,13 @@ bar {
 
   position top
 
-  status_command i3status
-
+  #status_command i3status
+  status_command i3status-rs ~/.config/i3/i3status-rust.config.toml
   # i3bar doing weard thing
   #status_command i3bar
 
 
-  status_command i3status | ~/.config/i3/scripts/i3-keyboard-layout i3status
+  #status_command i3status | ~/.config/i3/scripts/i3-keyboard-layout i3status
 
   #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
   #font pango:DejaVu Sans Mono 9
@@ -428,7 +433,7 @@ for_window [class="Galculator"] floating enable
 #
 
 # Set inner/outer gaps
-gaps inner 6
+gaps inner 3
 gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
@@ -488,7 +493,7 @@ bindsym $mod+Shift+e mode "$mode_system"
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     #bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym l exec --no-startup-id "~/.config/i3/scripts/xkblayout-state set 0; ~/.config/i3/scripts/i3lock-wrapper -nbl; xset r rate 200 40;", mode "default"
+    bindsym l exec --no-startup-id $LockerScript, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
