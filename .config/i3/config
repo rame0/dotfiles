@@ -95,7 +95,7 @@ exec --no-startup-id /usr/lib/pam_kwallet_init
 exec --no-startup-id blueman-applet
 
 # YandexDisk indicator
-exec --no-startup-id yandex-disk-indicator
+#exec --no-startup-id yandex-disk-indicator
 
 # Compton compositor
 #exec --no-startup-id /usr/bin/compton  --config $HOME/.config/i3/compton.conf
